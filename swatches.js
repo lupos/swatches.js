@@ -18,7 +18,8 @@
             overflow : 'false',
             swatchRevealClasses : '',
             targetName : '.productImage', //can be class or id, requires "." or "#""
-            targetLevel : 3 //This is the number of levels above the swatch that the target can be found (.find)
+            targetLevel : 3, //This is the number of levels above the swatch that the target can be found (.find)
+            imagesDirectory : 'images/tcp/sub-category/'
         }
 
         var plugin = this;
@@ -41,7 +42,8 @@
             productImages = [],
             relatedImageContainer,
             relatedImage,
-            relatedSwatchContainer;
+            relatedSwatchContainer,
+            imagesDirectory;
             
         // the "constructor" method that gets called when the object is created
 
@@ -58,6 +60,7 @@
             targetLevel = plugin.settings.targetLevel;
             targetName = plugin.settings.targetName;
             swatchReveal = '<div class="' + plugin.settings.swatchRevealClasses + '"></div>';
+            imagesDirectory = plugin.settings.imagesDirectory;
             if(plugin.settings.overflow){
                 plugin.setSwatchContainers(true);
             }
@@ -73,15 +76,15 @@
                 relatedImage = relatedImageContainer.find('img');
                 relatedSwatchContainer = $(this).parent();
                 $(this).mouseenter(function(){
-                    relatedImage.attr("src", "images/tcp/sub-category/" + productImages[$(this).index()] );
+                    relatedImage.attr("src", imagesDirectory + productImages[$(this).index()] );
                 });
 
                 $(this).mouseleave(function(){
-                    relatedImage.attr("src", "images/tcp/sub-category/" + productImages[relatedImageContainer.data('currentSwatch')]);
+                    relatedImage.attr("src", imagesDirectory + productImages[relatedImageContainer.data('currentSwatch')]);
                 });
 
                 $(this).click(function(){
-                    relatedImage.attr("src", "images/tcp/sub-category/" + productImages[$(this).index()]);
+                    relatedImage.attr("src", imagesDirectory + productImages[$(this).index()]);
                     relatedImageContainer.data('currentSwatch', $(this).index())
                     removeHighLight($(this));
                     $(this).addClass('selected');
@@ -126,7 +129,7 @@
         };
 
         var removeHighLight = function(clicked){
-            clicked.siblings('div.swatch.block').removeClass('selected');
+            clicked.siblings('div').removeClass('selected');
         }
 
         plugin.init();
